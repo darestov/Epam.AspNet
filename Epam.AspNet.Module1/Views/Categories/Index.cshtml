@@ -1,32 +1,29 @@
 ﻿@model List<Epam.AspNet.Module1.Models.Category>
+@{
+    ViewData["Title"] = "Categories";
+}
 
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Module1 - Categories</title>
-        <style>
-            td, th, table{
-                border: 1px solid black;
-            }
-        </style>
-    </head>
-    <body>
-        <h1>Categories</h1>
-        <table>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Description</th>
-            </tr>
-            @foreach (var cat in Model)
-            {
-                <tr>
-                    <td>@cat.CategoryID</td>
-                    <td>@cat.CategoryName</td>
-                    <td>@cat.Description</td>
-                </tr>
-            }
-        </table>
-    </body>
-</html>
+<style>
+    td, th, table {
+        border: 1px solid black;
+    }
+</style>
+
+<h1>Categories</h1>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Description</th>
+    </tr>
+    @foreach (var cat in Model)
+    {
+        <tr>
+            <td>@cat.CategoryID</td>
+            <td>@cat.CategoryName</td>
+            <td>@cat.Description</td>
+        </tr>
+    }
+</table>
+
 

@@ -1,49 +1,46 @@
 ﻿@model List<Epam.AspNet.Module1.Models.Product>
+@{
+    ViewData["Title"] = "Products";
+}
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Module1 - Products</title>
-    <style>
-        td, th, table {
-            border: 1px solid black;
-        }
-    </style>
-</head>
-<body>
-    <h1>Products</h1>
-    @Html.ActionLink("New product", "New")
-    <table>
+<style>
+    td, th, table {
+        border: 1px solid black;
+    }
+</style>
+
+<h1>Products</h1>
+@Html.ActionLink("New product", "New")
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Category</th>
+        <th>Supplier</th>
+        <th>Quantity per Units</th>
+        <th>Unit Price</th>
+        <th>Units in Stock</th>
+        <th>Units in Order</th>
+        <th>Reorder Level</th>
+        <th>Is Discontinued?</th>
+        <th>Action</th>
+    </tr>
+    @foreach (var prod in Model)
+    {
         <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Category</th>
-            <th>Supplier</th>
-            <th>Quantity per Units</th>
-            <th>Unit Price</th>
-            <th>Units in Stock</th>
-            <th>Units in Order</th>
-            <th>Reorder Level</th>
-            <th>Is Discontinued?</th>
-            <th>Action</th>
+            <td>@prod.ProductID</td>
+            <td>@prod.ProductName</td>
+            <td>@prod.Category.CategoryName</td>
+            <td>@prod.Supplier.CompanyName</td>
+            <td>@prod.QuantityPerUnit</td>
+            <td>@prod.UnitPrice</td>
+            <td>@prod.UnitsInStock</td>
+            <td>@prod.UnitsOnOrder</td>
+            <td>@prod.ReorderLevel</td>
+            <td>@prod.Discontinued</td>
+            <td>@Html.ActionLink("Edit", "Edit", new { id = prod.ProductID })</td>
         </tr>
-        @foreach (var prod in Model)
-        {
-            <tr>
-                <td>@prod.ProductID</td>
-                <td>@prod.ProductName</td>
-                <td>@prod.Category.CategoryName</td>
-                <td>@prod.Supplier.CompanyName</td>
-                <td>@prod.QuantityPerUnit</td>
-                <td>@prod.UnitPrice</td>
-                <td>@prod.UnitsInStock</td>
-                <td>@prod.UnitsOnOrder</td>
-                <td>@prod.ReorderLevel</td>
-                <td>@prod.Discontinued</td>
-                <td>@Html.ActionLink("Edit", "Edit", new { id = prod.ProductID })</td>
-            </tr>
-        }
-    </table>
-</body>
-</html>
+    }
+</table>
+
 

@@ -1,25 +1,12 @@
-﻿<!DOCTYPE html>
-<html>
-    <head>
-        <title>Module1 - Home</title>
-        <style>
-            .disclaimer{
-                color: gray;
-                font-size: smaller
-            }
-        </style>
-    </head>
-    <body>
-        <h1>This is the homepage of the Module1</h1>
-        The pages:
-        <ul>
-            <li>@Html.ActionLink("Show categories", "Index", "Categories")</li>
-            <li>@Html.ActionLink("Show products", "Index", "Products")</li>
-        </ul>
-        <p class="disclaimer">
-            Disclaimer: this task was done in the style of minimalism. This is by intent. It was created from empty template, with no wizards or scaffolders.
-            The absence of something does not indicate the lack of knowledge :)
-        </p>
-    </body>
-</html>
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+<h1>This is the homepage of the Module1</h1>
+The pages:
+<ul>
+    <li>@Html.ActionLink("Show categories", "Index", "Categories")</li>
+    <li>@Html.ActionLink("Show products", "Index", "Products")</li>
+</ul>
+
+
 
