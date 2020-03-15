@@ -47,6 +47,14 @@ namespace Epam.AspNet.Module1.Controllers
         [HttpPost]
         public IActionResult Edit(Product product)
         {
+            if(product.UnitPrice > 1000)
+            {
+                ModelState.AddModelError(nameof(Product.UnitPrice), "That's too much!");
+            }
+            if(!ModelState.IsValid)
+            {
+                return EditProductInternal(product);
+            }
             var oldProduct = context.Products.Find(product.ProductID);
             if(oldProduct!=null)
             {

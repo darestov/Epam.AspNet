@@ -13,6 +13,7 @@
 <body>
     <h1>Product</h1>
     <form method="post" action="/products/edit">
+        @Html.ValidationSummary();
         <div>
             @Html.HiddenFor(p => p.ProductID)
         </div>

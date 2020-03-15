@@ -1,8 +1,13 @@
-﻿namespace Epam.AspNet.Module1.Models
+﻿using Epam.AspNet.Module1.Models.Validation;
+using System.ComponentModel.DataAnnotations;
+
+namespace Epam.AspNet.Module1.Models
 {
     public class Product
     {
         public int ProductID { get; set; }
+        [Required]
+        [NobodyLikesBroccoli]
         public string ProductName { get; set; }
         public string QuantityPerUnit { get; set; }
         public decimal UnitPrice { get; set; }
