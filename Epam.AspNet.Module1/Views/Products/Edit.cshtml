@@ -31,9 +31,43 @@
     $.validator.methods.number = function (value, element) {
         return this.optional(element) || /-?(?:\d+|\d{1,3}(?:[\s\.,]\d{3})+)(?:[\.,]\d+)?$/.test(value);
     }
+
+    $(document).ready(function () {
+        
+        jQuery.validator.addMethod("greaterThanZero", function (value, element) {
+            debugger;
+            alert("we're here!");
+            return this.optional(element) || (parseFloat(value) > 0);
+        }, "* Amount must be greater than zero");
+
+        $('#theForm').validate({
+            rules: {
+                UnitPrice: { greaterThanZero: true }
+            }
+        });
+        //alert("p3");
+        //$('#theForm').validate({
+        //    rules: {
+        //        UnitPrice: {
+        //            number: false,
+        //            checkPrice: true
+        //        }
+        //    },
+        //    messages: {
+        //        UnitPrice: { checkPrice: "That's too much (client)!" }
+        //    }
+        //});
+
+        //alert("p4");
+        //$.validator.addMethod('checkPrice', function (value, element, params) {
+        //    alert("In the validator!");
+
+        //    return false;
+        //});
+    });
 </script>
 <h1>Product</h1>
-<form method="post" action="/products/edit">
+<form id="theForm" method="post" action="/products/edit">
     @Html.ValidationSummary()
     <div>
         @Html.HiddenFor(p => p.ProductID)
@@ -52,7 +86,7 @@
     <div class="form-row">
         <div class="form-group col-md-6">
             @Html.LabelFor(p => p.UnitPrice)
-            @Html.TextBoxFor(p => p.UnitPrice, new { type = "number", @class = "form-control" })
+            @Html.TextBoxFor(p => p.UnitPrice, new { type = "number", @class = "form-control checkPrice" })
         </div>
         <div class="form-group col-md-6">
             @Html.LabelFor(p => p.UnitsInStock)
