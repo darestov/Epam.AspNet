@@ -3,56 +3,66 @@
     ViewData["Title"] = "Product";
 }
 
-<style>
-    form > div {
-        margin-bottom: 10px;
-    }
-</style>
-
 <h1>Product</h1>
 <form method="post" action="/products/edit">
     @Html.ValidationSummary()
     <div>
         @Html.HiddenFor(p => p.ProductID)
     </div>
-    <div>
-        @Html.LabelFor(p => p.ProductName)
-        @Html.EditorFor(p => p.ProductName)
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            @Html.LabelFor(p => p.ProductName)
+            @Html.TextBoxFor(p => p.ProductName, new { @class = "form-control" })
+        </div>
+        <div class="form-group col-md-6">
+            @Html.LabelFor(p => p.QuantityPerUnit)
+            @Html.TextBoxFor(p => p.QuantityPerUnit, new { @class = "form-control" })
+        </div>
     </div>
-    <div>
-        @Html.LabelFor(p => p.QuantityPerUnit)
-        @Html.EditorFor(p => p.QuantityPerUnit)
+
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            @Html.LabelFor(p => p.UnitPrice)
+            @Html.TextBoxFor(p => p.UnitPrice, new { @class = "form-control" })
+        </div>
+        <div class="form-group col-md-6">
+            @Html.LabelFor(p => p.UnitsInStock)
+            @Html.TextBoxFor(p => p.UnitsInStock, new { type = "number", @class = "form-control" })
+        </div>
     </div>
-    <div>
-        @Html.LabelFor(p => p.UnitPrice)
-        @Html.EditorFor(p => p.UnitPrice)
+
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            @Html.LabelFor(p => p.UnitsOnOrder)
+            @Html.TextBoxFor(p => p.UnitsOnOrder, new { type = "number", @class = "form-control" })
+        </div>
+        <div class="form-group col-md-6">
+            @Html.LabelFor(p => p.ReorderLevel)
+            @Html.TextBoxFor(p => p.ReorderLevel, new { type = "number", @class = "form-control" })
+        </div>
     </div>
-    <div>
-        @Html.LabelFor(p => p.UnitsInStock)
-        @Html.EditorFor(p => p.UnitsInStock)
+
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            @Html.LabelFor(p => p.Supplier)
+            @Html.DropDownListFor(p => p.SupplierID, (IEnumerable<SelectListItem>)ViewBag.Suppliers, null, new { @class = "form-control" })
+        </div>
+        <div class="form-group col-md-6">
+            @Html.LabelFor(p => p.Category)
+            @Html.DropDownListFor(p => p.CategoryID, (IEnumerable<SelectListItem>)ViewBag.Categories, null, new { @class = "form-control" })
+        </div>
     </div>
-    <div>
-        @Html.LabelFor(p => p.UnitsOnOrder)
-        @Html.EditorFor(p => p.UnitsOnOrder)
+
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            @Html.CheckBoxFor(p => p.Discontinued, new { @class = "checkbox" })
+            @Html.LabelFor(p => p.Discontinued)
+        </div>
     </div>
-    <div>
-        @Html.LabelFor(p => p.ReorderLevel)
-        @Html.EditorFor(p => p.ReorderLevel)
-    </div>
-    <div>
-        @Html.LabelFor(p => p.Discontinued)
-        @Html.CheckBoxFor(p => p.Discontinued)
-    </div>
-    <div>
-        @Html.LabelFor(p => p.Category)
-        @Html.DropDownListFor(p => p.CategoryID, (IEnumerable<SelectListItem>)ViewBag.Categories)
-    </div>
-    <div>
-        @Html.LabelFor(p => p.Supplier)
-        @Html.DropDownListFor(p => p.SupplierID, (IEnumerable<SelectListItem>)ViewBag.Suppliers)
-    </div>
-    <div>
-        <input type="submit" value="Save">
+
+
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-primary">
         @if (TempData["SaveMessage"] is string s)
         {
             <i>@s</i>

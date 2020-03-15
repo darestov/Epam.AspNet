@@ -3,15 +3,9 @@
     ViewData["Title"] = "Products";
 }
 
-<style>
-    td, th, table {
-        border: 1px solid black;
-    }
-</style>
-
 <h1>Products</h1>
 @Html.ActionLink("New product", "New")
-<table>
+<table class="table">
     <tr>
         <th>ID</th>
         <th>Name</th>
@@ -37,7 +31,7 @@
             <td>@prod.UnitsInStock</td>
             <td>@prod.UnitsOnOrder</td>
             <td>@prod.ReorderLevel</td>
-            <td>@prod.Discontinued</td>
+            <td>@(prod.Discontinued ? "Yes" : "")</td>
             <td>@Html.ActionLink("Edit", "Edit", new { id = prod.ProductID })</td>
         </tr>
     }
