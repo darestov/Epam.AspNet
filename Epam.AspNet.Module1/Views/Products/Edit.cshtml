@@ -1,0 +1,66 @@
+﻿@model Epam.AspNet.Module1.Models.Product
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Module1 - Products</title>
+    <style>
+        form > div {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Product</h1>
+    <form method="post" action="/products/edit">
+        <div>
+            @Html.HiddenFor(p => p.ProductID)
+        </div>
+        <div>
+            @Html.LabelFor(p => p.ProductName)
+            @Html.EditorFor(p => p.ProductName)
+        </div>
+        <div>
+            @Html.LabelFor(p => p.QuantityPerUnit)
+            @Html.EditorFor(p => p.QuantityPerUnit)
+        </div>
+        <div>
+            @Html.LabelFor(p => p.UnitPrice)
+            @Html.EditorFor(p => p.UnitPrice)
+        </div>
+        <div>
+            @Html.LabelFor(p => p.UnitsInStock)
+            @Html.EditorFor(p => p.UnitsInStock)
+        </div>
+        <div>
+            @Html.LabelFor(p => p.UnitsOnOrder)
+            @Html.EditorFor(p => p.UnitsOnOrder)
+        </div>
+        <div>
+            @Html.LabelFor(p => p.ReorderLevel)
+            @Html.EditorFor(p => p.ReorderLevel)
+        </div>
+        <div>
+            @Html.LabelFor(p => p.Discontinued)
+            @Html.CheckBoxFor(p => p.Discontinued)
+        </div>
+        <div>
+            @Html.LabelFor(p => p.Category)
+            @Html.DropDownListFor(p => p.CategoryID, (IEnumerable<SelectListItem>)ViewBag.Categories)
+        </div>
+        <div>
+            @Html.LabelFor(p => p.Supplier)
+            @Html.DropDownListFor(p => p.SupplierID, (IEnumerable<SelectListItem>)ViewBag.Suppliers)
+        </div>
+        <div>
+            <input type="submit" value="Save">
+            @if (TempData["SaveMessage"] is string s)
+            {
+                <i>@s</i>
+                TempData["SaveMessage"] = null;
+            }
+        </div>
+    </form>
+</body>
+</html>
+

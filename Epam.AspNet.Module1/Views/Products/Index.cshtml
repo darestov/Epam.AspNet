@@ -12,6 +12,7 @@
 </head>
 <body>
     <h1>Products</h1>
+    @Html.ActionLink("New product", "New")
     <table>
         <tr>
             <th>ID</th>
@@ -24,6 +25,7 @@
             <th>Units in Order</th>
             <th>Reorder Level</th>
             <th>Is Discontinued?</th>
+            <th>Action</th>
         </tr>
         @foreach (var prod in Model)
         {
@@ -38,6 +40,7 @@
                 <td>@prod.UnitsOnOrder</td>
                 <td>@prod.ReorderLevel</td>
                 <td>@prod.Discontinued</td>
+                <td>@Html.ActionLink("Edit", "Edit", new { id = prod.ProductID })</td>
             </tr>
         }
     </table>
