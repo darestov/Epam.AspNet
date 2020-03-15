@@ -2,7 +2,36 @@
 @{
     ViewData["Title"] = "Product";
 }
+<style>
+    .field-validation-error {
+        color: #b94a48;
+    }
 
+    .field-validation-valid {
+        display: none;
+    }
+
+    input.input-validation-error {
+        border: 1px solid #b94a48;
+    }
+
+    input[type="checkbox"].input-validation-error {
+        border: 0 none;
+    }
+
+    .validation-summary-errors {
+        color: #b94a48;
+    }
+
+    .validation-summary-valid {
+        display: none;
+    }
+</style>
+<script>
+    $.validator.methods.number = function (value, element) {
+        return this.optional(element) || /-?(?:\d+|\d{1,3}(?:[\s\.,]\d{3})+)(?:[\.,]\d+)?$/.test(value);
+    }
+</script>
 <h1>Product</h1>
 <form method="post" action="/products/edit">
     @Html.ValidationSummary()
@@ -23,7 +52,7 @@
     <div class="form-row">
         <div class="form-group col-md-6">
             @Html.LabelFor(p => p.UnitPrice)
-            @Html.TextBoxFor(p => p.UnitPrice, new { @class = "form-control" })
+            @Html.TextBoxFor(p => p.UnitPrice, new { type = "number", @class = "form-control" })
         </div>
         <div class="form-group col-md-6">
             @Html.LabelFor(p => p.UnitsInStock)
