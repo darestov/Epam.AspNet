@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using System.Linq;
 
 namespace Epam.AspNet.Module1
 {
@@ -30,10 +31,12 @@ namespace Epam.AspNet.Module1
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
         {
             logger.LogInformation("Application started from '{0}'", env.ContentRootPath);
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            var configurationValues = Configuration.AsEnumerable().Select(kvp => string.Format("{0} = {1};", kvp.Key, kvp.Value)).ToArray();
+            logger.LogInformation("Configuration:\r\n"+string.Join("\r\n", configurationValues));
+
+            // note: simple "/Error" won't work, please use the path with no defaults
+            app.UseExceptionHandler("/Home/Error");
+            
             app.UseStaticFiles();
             app.UseRouting();
 
