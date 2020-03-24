@@ -21,10 +21,10 @@ namespace Epam.AspNet.Module1.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            var exceptionHandlerPathFeature = HttpContext.Features.Get<IExceptionHandlerPathFeature>();
-            string exceptionMessage = exceptionHandlerPathFeature?.Error.GetType().Name ?? "Unknown error";
+            IExceptionHandlerPathFeature exceptionHandlerPathFeature = HttpContext.Features.Get<IExceptionHandlerPathFeature>();
+            string exceptionMessage = exceptionHandlerPathFeature?.Error?.GetType().Name ?? "Unknown error";
             
-            if (exceptionHandlerPathFeature.Path != null)
+            if (exceptionHandlerPathFeature?.Path != null)
             {
                 exceptionMessage += " happened on " + exceptionHandlerPathFeature.Path;
             }
