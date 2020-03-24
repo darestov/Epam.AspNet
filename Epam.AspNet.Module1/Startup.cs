@@ -21,7 +21,7 @@ namespace Epam.AspNet.Module1
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddDbContext<NorthwindContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("local")));
             services.AddLogging(b => b.AddProvider(new TrivialFileLoggingProvider("log.txt")));

@@ -4,7 +4,7 @@
 }
 
 <h1>Products</h1>
-@Html.ActionLink("New product", "New")
+<a asp-action="New">New product</a>
 <table class="table">
     <tr>
         <th>ID</th>
@@ -32,7 +32,7 @@
             <td>@prod.UnitsOnOrder</td>
             <td>@prod.ReorderLevel</td>
             <td>@(prod.Discontinued ? "Yes" : "")</td>
-            <td>@Html.ActionLink("Edit", "Edit", new { id = prod.ProductID })</td>
+            <td><a asp-action="Edit" asp-route-id="@prod.ProductID">Edit</a></td>
         </tr>
     }
 </table>

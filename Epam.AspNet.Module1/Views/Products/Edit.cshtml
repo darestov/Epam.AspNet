@@ -1,4 +1,4 @@
-﻿@model Epam.AspNet.Module1.Models.Product
+﻿@model Product
 @{
     ViewData["Title"] = "Product";
 }
@@ -33,93 +33,78 @@
     }
 
     $(document).ready(function () {
-        
-        jQuery.validator.addMethod("greaterThanZero", function (value, element) {
-            debugger;
-            alert("we're here!");
-            return this.optional(element) || (parseFloat(value) > 0);
-        }, "* Amount must be greater than zero");
 
         $('#theForm').validate({
             rules: {
-                UnitPrice: { greaterThanZero: true }
+                UnitPrice: {
+                    number: false,
+                    checkPrice: true
+                }
+            },
+            messages: {
+                UnitPrice: { checkPrice: "That's too much (client)!" }
             }
         });
-        //alert("p3");
-        //$('#theForm').validate({
-        //    rules: {
-        //        UnitPrice: {
-        //            number: false,
-        //            checkPrice: true
-        //        }
-        //    },
-        //    messages: {
-        //        UnitPrice: { checkPrice: "That's too much (client)!" }
-        //    }
-        //});
 
-        //alert("p4");
-        //$.validator.addMethod('checkPrice', function (value, element, params) {
-        //    alert("In the validator!");
-
-        //    return false;
-        //});
+        $.validator.addMethod('checkPrice', function (value, element, params) {
+            return false;
+        });
     });
 </script>
-<h1>Product</h1>
-<form id="theForm" method="post" action="/products/edit">
+<h1>Product3</h1>
+<form id="theForm" method="post" asp-controller="Products" asp-action="Edit">
     @Html.ValidationSummary()
     <div>
-        @Html.HiddenFor(p => p.ProductID)
+        <input type="hidden" asp-for="ProductID"/>
     </div>
     <div class="form-row">
         <div class="form-group col-md-6">
-            @Html.LabelFor(p => p.ProductName)
-            @Html.TextBoxFor(p => p.ProductName, new { @class = "form-control" })
+            <label asp-for="ProductName"></label>
+            <input asp-for="ProductName" class="form-control" />
         </div>
         <div class="form-group col-md-6">
-            @Html.LabelFor(p => p.QuantityPerUnit)
-            @Html.TextBoxFor(p => p.QuantityPerUnit, new { @class = "form-control" })
-        </div>
-    </div>
-
-    <div class="form-row">
-        <div class="form-group col-md-6">
-            @Html.LabelFor(p => p.UnitPrice)
-            @Html.TextBoxFor(p => p.UnitPrice, new { type = "number", @class = "form-control checkPrice" })
-        </div>
-        <div class="form-group col-md-6">
-            @Html.LabelFor(p => p.UnitsInStock)
-            @Html.TextBoxFor(p => p.UnitsInStock, new { type = "number", @class = "form-control" })
+            <label asp-for="QuantityPerUnit"></label>
+            <input asp-for="QuantityPerUnit" class="form-control" />
         </div>
     </div>
 
     <div class="form-row">
         <div class="form-group col-md-6">
-            @Html.LabelFor(p => p.UnitsOnOrder)
-            @Html.TextBoxFor(p => p.UnitsOnOrder, new { type = "number", @class = "form-control" })
+            <label asp-for="UnitPrice"></label>
+            <input asp-for="UnitPrice" class="form-control" />
         </div>
         <div class="form-group col-md-6">
-            @Html.LabelFor(p => p.ReorderLevel)
-            @Html.TextBoxFor(p => p.ReorderLevel, new { type = "number", @class = "form-control" })
-        </div>
-    </div>
-
-    <div class="form-row">
-        <div class="form-group col-md-6">
-            @Html.LabelFor(p => p.Supplier)
-            @Html.DropDownListFor(p => p.SupplierID, (IEnumerable<SelectListItem>)ViewBag.Suppliers, null, new { @class = "form-control" })
-        </div>
-        <div class="form-group col-md-6">
-            @Html.LabelFor(p => p.Category)
-            @Html.DropDownListFor(p => p.CategoryID, (IEnumerable<SelectListItem>)ViewBag.Categories, null, new { @class = "form-control" })
+            <label asp-for="UnitsInStock"></label>
+            <input asp-for="UnitsInStock" type="number" class="form-control" />
         </div>
     </div>
 
     <div class="form-row">
         <div class="form-group col-md-6">
-            @Html.CheckBoxFor(p => p.Discontinued, new { @class = "checkbox" })
-            @Html.LabelFor(p => p.Discontinued)
+            <label asp-for="UnitsOnOrder"></label>
+            <input asp-for="UnitsOnOrder" type="number" class="form-control" />
+        </div>
+        <div class="form-group col-md-6">
+            <label asp-for="ReorderLevel"></label>
+            <input asp-for="ReorderLevel" type="number" class="form-control" />
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label asp-for="Supplier"></label>
+            <select asp-for="SupplierID" asp-items="@ViewBag.SupplierID" class="form-control"></select>
+        </div>
+        <div class="form-group col-md-6">
+            <label asp-for="Category"></label>
+            <select asp-for="CategoryID" asp-items="@ViewBag.CategoryID" class="form-control"></select>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <input type="checkbox" asp-for="Discontinued" class="checkbox" />
+            <label asp-for="Discontinued"></label>
         </div>
     </div>
 

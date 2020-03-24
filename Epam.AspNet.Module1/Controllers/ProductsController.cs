@@ -39,8 +39,8 @@ namespace Epam.AspNet.Module1.Controllers
 
         private IActionResult EditProductInternal(Product product)
         {
-            ViewBag.Categories = context.Categories.Select(c => new SelectListItem(c.CategoryName, c.CategoryID.ToString())).ToList();
-            ViewBag.Suppliers = context.Suppliers.Select(s => new SelectListItem(s.CompanyName, s.SupplierID.ToString())).ToList();
+            ViewBag.CategoryID = context.Categories.Select(c => new SelectListItem(c.CategoryName, c.CategoryID.ToString())).ToList();
+            ViewBag.SupplierID = context.Suppliers.Select(s => new SelectListItem(s.CompanyName, s.SupplierID.ToString())).ToList();
             return View(nameof(Edit), product);
         }
 
