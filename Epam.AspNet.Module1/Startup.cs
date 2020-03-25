@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Linq;
+using Epam.AspNet.Module1.Interfaces;
 
 namespace Epam.AspNet.Module1
 {
@@ -25,6 +26,10 @@ namespace Epam.AspNet.Module1
             services.AddDbContext<NorthwindContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("local")));
             services.AddLogging(b => b.AddProvider(new TrivialFileLoggingProvider("log.txt")));
+            services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<ISupplierRepository, SupplierRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<IUnitOfWork, NorthwindContext>();
         }
 
         // configure the HTTP request pipeline.
