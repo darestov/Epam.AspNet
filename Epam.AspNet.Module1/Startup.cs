@@ -55,6 +55,7 @@ namespace Epam.AspNet.Module1
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();
+                endpoints.MapControllerRoute("images", "images/{id}", new { controller = "Categories", action = "DownloadImage" });
             });
         }
     }
