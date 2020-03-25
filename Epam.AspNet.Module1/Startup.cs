@@ -13,6 +13,11 @@ namespace Epam.AspNet.Module1
 {
     public class Startup
     {
+        public static readonly Microsoft.Extensions.Logging.LoggerFactory _myLoggerFactory =
+            new LoggerFactory(new[] {
+                new Microsoft.Extensions.Logging.Debug.DebugLoggerProvider()
+            });
+
         public IConfiguration Configuration { get; }
 
         public Startup(IConfiguration configuration)
@@ -24,7 +29,9 @@ namespace Epam.AspNet.Module1
         {
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddDbContext<NorthwindContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("local")));
+                options
+                .UseSqlServer(Configuration.GetConnectionString("local"))
+                .UseLoggerFactory(_myLoggerFactory));
             services.AddLogging(b => b.AddProvider(new TrivialFileLoggingProvider("log.txt")));
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<ISupplierRepository, SupplierRepository>();

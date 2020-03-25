@@ -91,14 +91,12 @@ namespace Epam.AspNet.Education.Tests
             mockSuppliers.Setup(x => x.ListSuppliers()).Returns(new[] { new Supplier(), new Supplier() });
 
             var controller = new ProductsController(mockConfiguration.Object, mockUoW.Object, mockProducts.Object, mockSuppliers.Object, mockCategories.Object);
-            var product = new Product();
 
             var actionResult = controller.New();
 
             var viewResult = Assert.IsType<ViewResult>(actionResult);
             var model = Assert.IsType<Product>(viewResult.Model);
             Assert.NotNull(model);
-            Assert.Equal(model, product);
 
             Assert.True(viewResult.ViewData.ContainsKey("CategoryID"));
             Assert.True(viewResult.ViewData.ContainsKey("SupplierID"));

@@ -10,6 +10,8 @@
         <th>ID</th>
         <th>Name</th>
         <th>Description</th>
+        <th>Picture</th>
+        <th>Action</th>
     </tr>
     @foreach (var cat in Model)
     {
@@ -17,6 +19,13 @@
             <td>@cat.CategoryID</td>
             <td>@cat.CategoryName</td>
             <td>@cat.Description</td>
+            <td>
+                <img src="@Url.Action("Image", new { id = cat.CategoryID })" />
+            </td>
+            <td>
+                <a asp-action="DownloadImage" asp-route-id="@cat.CategoryID">Download</a> |
+                <a asp-action="Edit" asp-route-id="@cat.CategoryID">Edit</a>
+            </td>
         </tr>
     }
 </table>
