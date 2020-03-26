@@ -30,12 +30,19 @@ namespace Epam.AspNet.Module1
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews().AddRazorRuntimeCompilation();
+            services.AddLogging(b => b.AddProvider(new TrivialFileLoggingProvider("log.txt")));
+
+            services.AddControllersWithViews(options=> 
+            {
+                options.Filters.Add<LoggingFilter>();
+            }).AddRazorRuntimeCompilation();
+
             services.AddDbContext<NorthwindContext>(options =>
                 options
                 .UseSqlServer(Configuration.GetConnectionString("local"))
                 .UseLoggerFactory(_myLoggerFactory));
-            services.AddLogging(b => b.AddProvider(new TrivialFileLoggingProvider("log.txt")));
+
+
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<ISupplierRepository, SupplierRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
