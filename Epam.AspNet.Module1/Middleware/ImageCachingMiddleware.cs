@@ -17,6 +17,7 @@ namespace Epam.AspNet.Module1.Middleware
 {
     public class ImageCachingMiddleware
     {
+        private DateTime lastCacheHit;
         public ImageCachingMiddleware(RequestDelegate next, ImageCachingOptions imageCachingOptions)
         {
             Next = next;
@@ -30,6 +31,8 @@ namespace Epam.AspNet.Module1.Middleware
 
         public async Task Invoke(HttpContext httpContext)
         {
+            ClearCacheIfTimeout();
+
             Stream oldStream = httpContext.Response.Body;
             Stream memStream = null;
             int imageId=-1;
@@ -54,9 +57,6 @@ namespace Epam.AspNet.Module1.Middleware
                             var cd = new System.Net.Mime.ContentDisposition
                             {
                                 FileName = file.Name.Substring(underscoreIndex + 1),
-
-                                // always prompt the user for downloading, set to true if you want 
-                                // the browser to try to show the file inline
                                 Inline = false
                             };
                             httpContext.Response.Headers.Add("Content-Disposition", cd.ToString());
@@ -69,7 +69,7 @@ namespace Epam.AspNet.Module1.Middleware
                                 // by deployment basis.
                                 Font font = SystemFonts.CreateFont("Arial", 10); 
 
-                                using (var img2 = img.Clone(ctx => ApplyScalingWaterMarkSimple(ctx, font, "This is from cache", Color.Red, 5)))
+                                using (var img2 = img.Clone(ctx => ApplyScalingWaterMarkSimple(ctx, font, "This is from cache", Color.White, 5)))
                                 {
                                     using var m = new MemoryStream();
                                     img2.Save(m, new SixLabors.ImageSharp.Formats.Bmp.BmpEncoder());
@@ -77,6 +77,7 @@ namespace Epam.AspNet.Module1.Middleware
                                     await m.CopyToAsync(httpContext.Response.Body);
                                 }
                             }
+                            lastCacheHit = DateTime.UtcNow;
                             return;
                         }
                         else
@@ -93,6 +94,9 @@ namespace Epam.AspNet.Module1.Middleware
                 // here we can save the image in the cache
                 if (memStream!=null && httpContext.Response.ContentType == "image/bmp")
                 {
+                    var dirInfo = new DirectoryInfo(ImageCachingOptions.CacheDirectoryPath);
+                    if (dirInfo.GetFileSystemInfos("*.bmp").Length >= ImageCachingOptions.CacheCapacity)
+                        return;
                     if (httpContext.Response.Headers.TryGetValue("Content-Disposition", out var values))
                     {
                         var cd = new ContentDisposition(values);
@@ -100,6 +104,7 @@ namespace Epam.AspNet.Module1.Middleware
                         using var fileStream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None);
                         memStream.Position = 0;
                         await memStream.CopyToAsync(fileStream);
+                        lastCacheHit = DateTime.UtcNow;
                     }
                 }
             }
@@ -112,6 +117,20 @@ namespace Epam.AspNet.Module1.Middleware
                     httpContext.Response.Body = oldStream;
                 }
             }
+        }
+
+        private bool ClearCacheIfTimeout()
+        {
+            if(DateTime.UtcNow - lastCacheHit > ImageCachingOptions.ExpirationInterval)
+            {
+                var dirInfo = new DirectoryInfo(ImageCachingOptions.CacheDirectoryPath);
+                foreach(var file in dirInfo.GetFiles())
+                {
+                    file.Delete();
+                }
+                return true;
+            }
+            return false;
         }
 
         private static IImageProcessingContext ApplyScalingWaterMarkSimple(IImageProcessingContext processingContext,
@@ -132,13 +151,13 @@ namespace Epam.AspNet.Module1.Middleware
             float scalingFactor = Math.Min(imgSize.Width / size.Width, imgSize.Height / size.Height);
 
             //create a new font
-            Font scaledFont = new Font(font, scalingFactor * font.Size);
+            Font scaledFont = new Font(font, scalingFactor * font.Size, FontStyle.Bold);
 
             var center = new PointF(imgSize.Width / 2, imgSize.Height / 2);
             var textGraphicOptions = new TextGraphicsOptions(true)
             {
                 HorizontalAlignment = HorizontalAlignment.Center,
-                VerticalAlignment = VerticalAlignment.Center
+                VerticalAlignment = VerticalAlignment.Center,
             };
 
             return processingContext.DrawText(textGraphicOptions, text, scaledFont, color, center);

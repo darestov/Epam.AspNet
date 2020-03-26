@@ -59,7 +59,7 @@ namespace Epam.AspNet.Module1
             app.UseImageCaching(new ImageCachingOptions
             {
                 ControllerName = "Categories", ActionName = "DownloadImage",
-                CacheCapacity = 5,
+                CacheCapacity = 3,
                 CacheDirectoryPath = Path.Combine(Path.GetTempPath(), "Epam.AspNetCore.ImageCache"),
                 ExpirationInterval = TimeSpan.FromMinutes(1)
             });
