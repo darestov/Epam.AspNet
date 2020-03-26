@@ -8,6 +8,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Linq;
 using Epam.AspNet.Module1.Interfaces;
+using Epam.AspNet.Module1.Middleware;
+using System;
+using System.IO;
 
 namespace Epam.AspNet.Module1
 {
@@ -51,6 +54,15 @@ namespace Epam.AspNet.Module1
             
             app.UseStaticFiles();
             app.UseRouting();
+
+            // use our custom image caching
+            app.UseImageCaching(new ImageCachingOptions
+            {
+                ControllerName = "Categories", ActionName = "DownloadImage",
+                CacheCapacity = 5,
+                CacheDirectoryPath = Path.Combine(Path.GetTempPath(), "Epam.AspNetCore.ImageCache"),
+                ExpirationInterval = TimeSpan.FromMinutes(1)
+            });
 
             app.UseEndpoints(endpoints =>
             {
