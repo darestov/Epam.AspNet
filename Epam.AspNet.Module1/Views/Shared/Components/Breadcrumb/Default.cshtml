@@ -1,0 +1,11 @@
+﻿@model Epam.AspNet.Module1.Views.BreadcrumbViewComponent.BreadcrumbViewModel
+ 
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            @for (int i = 0; i < Model.Sections.Count; i++)
+            {
+                var sec = Model.Sections[i];
+                <li class="breadcrumb-item @(sec.IsActive? "active": "")"><a asp-controller="@sec.ControllerName" asp-action="@sec.ActionName">@sec.DisplayName</a></li>
+            }
+        </ol>
+    </nav>
