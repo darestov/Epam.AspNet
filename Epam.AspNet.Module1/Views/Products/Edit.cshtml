@@ -51,11 +51,11 @@
         });
     });
 </script>
-<h1>Product3</h1>
+<h1>Product</h1>
 <form id="theForm" method="post" asp-controller="Products" asp-action="Edit">
     @Html.ValidationSummary()
     <div>
-        <input type="hidden" asp-for="ProductID"/>
+        <input type="hidden" asp-for="ProductID" />
     </div>
     <div class="form-row">
         <div class="form-group col-md-6">
@@ -120,3 +120,6 @@
 </form>
 
 
+@section Footers {
+    <p class="text-danger">Please set the correct category: don't put meat on 'Beverages'.</p>
+}

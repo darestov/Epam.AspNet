@@ -1,8 +1,10 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using Epam.AspNet.Module1.DataAccess;
 using Epam.AspNet.Module1.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Epam.AspNet.Module1.Controllers
 {
@@ -82,6 +84,27 @@ namespace Epam.AspNet.Module1.Controllers
             }
 
             return RedirectToAction(nameof(Edit), new { id = category.CategoryID });
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                var cat = context.Categories.Find(id);
+                if (cat == null)
+                {
+                    return NotFound();
+                }
+                context.Remove(cat);
+                await context.SaveChangesAsync();
+                return RedirectToAction();
+            }
+            catch(DbUpdateException ex)
+            {
+                // ref constraint exception
+                throw;
+            }
         }
     }
 }

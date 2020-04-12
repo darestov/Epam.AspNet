@@ -25,8 +25,8 @@
             </div>
             <div class="form-group">
                 @*
-        <input asp-for="Picture" class="form-control" />
-        <span asp-validation-for="Picture" class="text-danger"></span>*@
+                    <input asp-for="Picture" class="form-control" />
+                    <span asp-validation-for="Picture" class="text-danger"></span>*@
                 <label asp-for="Picture" class="control-label"></label>
                 @if (Model.Picture != null)
                 {
@@ -47,3 +47,32 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
+@section Headers {
+    
+   <button class="btn btn-danger" value="Delete current" onclick="onDelete();">Delete current</button>
+    
+}
+
+@section Footers {
+    <p>On this page you can upload a new image for the category!</p>
+}
+
+@section Scripts {
+    <script>
+        function onDelete() {
+            if (confirm("Do you want to delete this category?")) {
+                let id = $("#CategoryID").val();
+                $.ajax({
+                    url: `/categories/delete/${id}`,
+                    type: 'DELETE',
+                    success: function (result) {
+                        window.location = '/categories';
+                    },
+                    error: function () {
+                        alert('Could not delete the category. Maybe it does not exist.');
+                    }
+                });
+            }
+        }
+    </script>
+}
