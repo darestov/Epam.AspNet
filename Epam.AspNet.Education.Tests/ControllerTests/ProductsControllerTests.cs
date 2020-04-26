@@ -29,14 +29,14 @@ namespace Epam.AspNet.Education.Tests
         [Fact]
         public void Controller_ReadsMaxPropertyAndReturnsListOfProducts()
         {
-            Mock<ICategoryRepository> mockCategories = new Mock<ICategoryRepository>();
-            Mock<ISupplierRepository> mockSuppliers = new Mock<ISupplierRepository>();
+            
             Mock<IProductRepository> mockProducts = new Mock<IProductRepository>();
             mockProducts.Setup(x => x.ListProductsWithCategoriesAndSuppliers(It.IsAny<int>())).Returns(new[] { new Product() });
 
             Mock<IUnitOfWork> mockUoW = new Mock<IUnitOfWork>();
+            mockUoW.Setup(x => x.Products).Returns(mockProducts.Object);
 
-            var controller = new ProductsController(mockConfiguration.Object, mockUoW.Object, mockProducts.Object, mockSuppliers.Object, mockCategories.Object);
+            var controller = new ProductsController(mockConfiguration.Object, mockUoW.Object);
 
             var actionResult = controller.Index();
 
@@ -49,29 +49,30 @@ namespace Epam.AspNet.Education.Tests
         [Fact]
         public void EditAction_ReturnsNotFound_WhenIdDoesNotExist()
         {
-            Mock<ICategoryRepository> mockCategories = new Mock<ICategoryRepository>();
-            Mock<ISupplierRepository> mockSuppliers = new Mock<ISupplierRepository>();
             Mock<IProductRepository> mockProducts = new Mock<IProductRepository>();
             mockProducts.Setup(x => x.GetProduct(999)).Returns((Product)null);
             Mock<IUnitOfWork> mockUoW = new Mock<IUnitOfWork>();
+            mockUoW.Setup(x => x.Products).Returns(mockProducts.Object);
 
-            var controller = new ProductsController(mockConfiguration.Object, mockUoW.Object, mockProducts.Object, mockSuppliers.Object, mockCategories.Object);
+            var controller = new ProductsController(mockConfiguration.Object, mockUoW.Object);
 
             var actionResult = controller.Edit(999);
 
             Assert.IsType<NotFoundResult>(actionResult);
-
         }
 
         [Fact]
         public void PostEditAction_ValidatesError_WhenPriceIsGreaterThan1000()
         {
+            Mock<IProductRepository> mockProducts = new Mock<IProductRepository>();
             Mock<ICategoryRepository> mockCategories = new Mock<ICategoryRepository>();
             Mock<ISupplierRepository> mockSuppliers = new Mock<ISupplierRepository>();
-            Mock<IProductRepository> mockProducts = new Mock<IProductRepository>();
             Mock<IUnitOfWork> mockUoW = new Mock<IUnitOfWork>();
+            mockUoW.Setup(x => x.Products).Returns(mockProducts.Object);
+            mockUoW.Setup(x => x.Suppliers).Returns(mockSuppliers.Object);
+            mockUoW.Setup(x => x.Categories).Returns(mockCategories.Object);
 
-            var controller = new ProductsController(mockConfiguration.Object, mockUoW.Object, mockProducts.Object, mockSuppliers.Object, mockCategories.Object);
+            var controller = new ProductsController(mockConfiguration.Object, mockUoW.Object);
             var product = new Product { UnitPrice = 2000 };
 
             controller.Edit(product);
@@ -89,8 +90,10 @@ namespace Epam.AspNet.Education.Tests
 
             mockCategories.Setup(x => x.ListCategories()).Returns(new[] { new Category(), new Category() });
             mockSuppliers.Setup(x => x.ListSuppliers()).Returns(new[] { new Supplier(), new Supplier() });
+            mockUoW.Setup(x => x.Suppliers).Returns(mockSuppliers.Object);
+            mockUoW.Setup(x => x.Categories).Returns(mockCategories.Object);
 
-            var controller = new ProductsController(mockConfiguration.Object, mockUoW.Object, mockProducts.Object, mockSuppliers.Object, mockCategories.Object);
+            var controller = new ProductsController(mockConfiguration.Object, mockUoW.Object);
 
             var actionResult = controller.New();
 

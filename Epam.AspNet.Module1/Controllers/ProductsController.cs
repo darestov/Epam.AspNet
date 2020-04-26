@@ -12,17 +12,11 @@ namespace Epam.AspNet.Module1.Controllers
     public class ProductsController : Controller
     {  
         private readonly IUnitOfWork unitOfWork;
-        private readonly IProductRepository productRepository;
-        private readonly ISupplierRepository supplierRepository;
-        private readonly ICategoryRepository categoryRepository;
 
-        public ProductsController(IConfiguration config, IUnitOfWork unitOfWork, IProductRepository productRepository, ISupplierRepository supplierRepository, ICategoryRepository categoryRepository)
+        public ProductsController(IConfiguration config, IUnitOfWork unitOfWork)
         {
             Config = config;
             this.unitOfWork = unitOfWork;
-            this.productRepository = productRepository;
-            this.supplierRepository = supplierRepository;
-            this.categoryRepository = categoryRepository;
         }
 
         public IConfiguration Config { get; }
@@ -31,12 +25,13 @@ namespace Epam.AspNet.Module1.Controllers
         public IActionResult Index()
         {
             int max = Config.GetValue("AppSettings:MaxProducts", 0);
-            return View(productRepository.ListProductsWithCategoriesAndSuppliers(max));
+            System.Collections.Generic.IEnumerable<Product> model = unitOfWork.Products.ListProductsWithCategoriesAndSuppliers(max);
+            return base.View(model);
         }
 
         public IActionResult Edit(int id)
         {
-            var product = productRepository.GetProduct(id);
+            var product = unitOfWork.Products.GetProduct(id);
             if (product == null)
                 return NotFound();
             return EditProductInternal(product);
@@ -44,8 +39,8 @@ namespace Epam.AspNet.Module1.Controllers
 
         private IActionResult EditProductInternal(Product product)
         {
-            ViewBag.CategoryID = categoryRepository.ListCategories().Select(c => new SelectListItem(c.CategoryName, c.CategoryID.ToString())).ToList();
-            ViewBag.SupplierID = supplierRepository.ListSuppliers().Select(s => new SelectListItem(s.CompanyName, s.SupplierID.ToString())).ToList();
+            ViewBag.CategoryID = unitOfWork.Categories.ListCategories().Select(c => new SelectListItem(c.CategoryName, c.CategoryID.ToString())).ToList();
+            ViewBag.SupplierID = unitOfWork.Suppliers.ListSuppliers().Select(s => new SelectListItem(s.CompanyName, s.SupplierID.ToString())).ToList();
             return View(nameof(Edit), product);
         }
 
@@ -67,7 +62,7 @@ namespace Epam.AspNet.Module1.Controllers
                 return EditProductInternal(product);
             }
 
-            var oldProduct = productRepository.GetProduct(product.ProductID);
+            var oldProduct = unitOfWork.Products.GetProduct(product.ProductID);
             if(oldProduct!=null)
             {
                 // we're updating existing product
@@ -81,7 +76,7 @@ namespace Epam.AspNet.Module1.Controllers
             else
             {
                 // a new product
-                productRepository.Add(product);
+                unitOfWork.Products.Add(product);
                 unitOfWork.SaveChanges();
             }
             return RedirectToAction(nameof(Index));

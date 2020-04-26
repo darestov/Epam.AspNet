@@ -19,23 +19,34 @@ namespace Epam.AspNet.Module1.Controllers.Api
         private readonly ISupplierRepository supplierRepository;
         private readonly ICategoryRepository categoryRepository;
 
-        public ProductsController(IConfiguration config, IUnitOfWork unitOfWork, IProductRepository productRepository, ISupplierRepository supplierRepository, ICategoryRepository categoryRepository)
+        public ProductsController(IConfiguration config, IUnitOfWork unitOfWork)
         {
             Config = config;
             this.unitOfWork = unitOfWork;
-            this.productRepository = productRepository;
-            this.supplierRepository = supplierRepository;
-            this.categoryRepository = categoryRepository;
         }
 
         public IConfiguration Config { get; }
 
 
+        [HttpGet("{productId}")]
+        public async Task<IActionResult> GetProduct(int productId)
+        {
+            return Ok(unitOfWork.Products.GetProduct(productId));
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetAllProducts()
         {
             int max = Config.GetValue("AppSettings:MaxProducts", 0);
-            return Ok(productRepository.ListProductsWithCategoriesAndSuppliers(max));
+            return Ok(unitOfWork.Products.ListProductsWithCategoriesAndSuppliers(max));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateProduct(Product product)
+        {
+            unitOfWork.Products.Add(product);
+            unitOfWork.SaveChanges();
+            return CreatedAtAction("GetProduct", new { productId = product.ProductID }, product);
         }
     }
 }

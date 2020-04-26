@@ -42,11 +42,7 @@ namespace Epam.AspNet.Module1
                 .UseSqlServer(Configuration.GetConnectionString("local"))
                 .UseLoggerFactory(_myLoggerFactory));
 
-
-            services.AddScoped<IProductRepository, ProductRepository>();
-            services.AddScoped<ISupplierRepository, SupplierRepository>();
-            services.AddScoped<ICategoryRepository, CategoryRepository>();
-            services.AddScoped<IUnitOfWork, NorthwindContext>();
+            services.AddScoped<IUnitOfWork, EfCoreUnitOfWork>();
         }
 
         // configure the HTTP request pipeline.
