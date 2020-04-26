@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Epam.AspNet.Education.Tests
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleRestClient", "SimpleRestClient\SimpleRestClient.csproj", "{9716A947-90F4-4837-AFF6-F1AFD5F0FE4B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Epam.AspNet.Education.ApiTests", "Epam.AspNet.Education.ApiTests\Epam.AspNet.Education.ApiTests.csproj", "{A5F3A6DF-AD92-43D4-8E87-E3EC541DECEB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{9716A947-90F4-4837-AFF6-F1AFD5F0FE4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9716A947-90F4-4837-AFF6-F1AFD5F0FE4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9716A947-90F4-4837-AFF6-F1AFD5F0FE4B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5F3A6DF-AD92-43D4-8E87-E3EC541DECEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5F3A6DF-AD92-43D4-8E87-E3EC541DECEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5F3A6DF-AD92-43D4-8E87-E3EC541DECEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5F3A6DF-AD92-43D4-8E87-E3EC541DECEB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

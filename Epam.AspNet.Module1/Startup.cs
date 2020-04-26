@@ -13,6 +13,7 @@ using System;
 using System.IO;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
+using Microsoft.AspNetCore.Mvc.Controllers;
 
 namespace Epam.AspNet.Module1
 {
@@ -42,6 +43,7 @@ namespace Epam.AspNet.Module1
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+                c.CustomOperationIds(d => (d.ActionDescriptor as ControllerActionDescriptor)?.ActionName);
                 // Set the comments path for the Swagger JSON and UI.
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
@@ -66,7 +68,7 @@ namespace Epam.AspNet.Module1
             // note: simple "/Error" won't work, please use the path with no defaults
             app.UseExceptionHandler("/Home/Error");
 
-            app.UseSwagger();
+            app.UseSwagger(o => o.SerializeAsV2 = true);
             // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
             // specifying the Swagger JSON endpoint.
             app.UseSwaggerUI(c =>

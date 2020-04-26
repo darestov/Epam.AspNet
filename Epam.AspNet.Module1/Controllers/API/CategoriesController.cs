@@ -1,7 +1,9 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Epam.AspNet.Module1.DataAccess;
 using Epam.AspNet.Module1.Models;
+using Epam.AspNet.Module1.Models.DTO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -23,14 +25,14 @@ namespace Epam.AspNet.Module1.Controllers.Api
         /// Lists all categories (image bytes not included).
         /// </summary>
         [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(List<CategoryDto>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllCategories()
         {
             var query = from c in context.Categories
-                        select new { 
-                            c.CategoryID,
-                            c.CategoryName,
-                            c.Description
+                        select new CategoryDto { 
+                            CategoryID= c.CategoryID,
+                            CategoryName = c.CategoryName,
+                            Description = c.Description
                         };
             return Ok(await query.ToListAsync());
         }
