@@ -2,11 +2,48 @@
     Layout = "Layout2";
     ViewData["Title"] = "Home Page";
 }
+
 <h1>This is the homepage of the EPAM ASP.NET Core education program</h1>
 Welcome!
+<h3>Test Web API</h3>
+<button id="btnApiCategories">Categories</button>
+<button id="btnApiProducts">Products</button>
+<div id="output" class="border w-50 h-25"></div>
 
 @section Footers {
     <p>Home page - nothing special to say :(</p>
 }
 
 
+<script>
+    $(document).ready(function () {
+        $("#btnApiCategories").click( function () {
+            fetch('/api/categories')
+                .then((response) => {
+                    return response.json();
+                })
+                .then((data) => {
+                    console.log(data);
+                    for (cat of data) {
+                        let s = `<div><h4>${cat.categoryName}</h4></div>`;
+                        $("#output").append(s);
+                    }
+                });
+        });
+
+        $("#btnApiProducts").click(function () {
+            fetch('/api/products')
+                .then((response) => {
+                    return response.json();
+                })
+                .then((data) => {
+                    console.log(data);
+                    for (prod of data) {
+                        let s = `<div><h4>${prod.productName}</h4></div>`;
+                        $("#output").append(s);
+                    }
+                });
+        });
+
+    });
+</script>
