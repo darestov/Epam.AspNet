@@ -1,8 +1,10 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Epam.AspNet.Module1.DataAccess;
 using Epam.AspNet.Module1.Interfaces;
 using Epam.AspNet.Module1.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -29,12 +31,14 @@ namespace Epam.AspNet.Module1.Controllers.Api
 
 
         [HttpGet("{productId}")]
+        [ProducesResponseType(typeof(Product), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetProduct(int productId)
         {
             return Ok(unitOfWork.Products.GetProduct(productId));
         }
 
         [HttpGet]
+        [ProducesResponseType(typeof(List<Product>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllProducts()
         {
             int max = Config.GetValue("AppSettings:MaxProducts", 0);
