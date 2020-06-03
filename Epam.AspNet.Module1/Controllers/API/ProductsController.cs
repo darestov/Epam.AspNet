@@ -17,9 +17,6 @@ namespace Epam.AspNet.Module1.Controllers.Api
     public class ProductsController : ControllerBase
     {  
         private readonly IUnitOfWork unitOfWork;
-        private readonly IProductRepository productRepository;
-        private readonly ISupplierRepository supplierRepository;
-        private readonly ICategoryRepository categoryRepository;
 
         public ProductsController(IConfiguration config, IUnitOfWork unitOfWork)
         {

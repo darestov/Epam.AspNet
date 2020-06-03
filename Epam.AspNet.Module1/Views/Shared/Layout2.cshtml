@@ -17,6 +17,10 @@
             color: gray;
             font-size: smaller
         }
+
+        .text-dark, a:hover {
+            color: whitesmoke !important;
+        }
     </style>
     <script src="~/jquery/jquery-3.4.1.js"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.17.0/jquery.validate.min.js"></script>
@@ -41,6 +45,7 @@
                     <a class="nav-link text-danger" asp-controller="Home" asp-action="DoNotClick">Do not click</a>
                 </li>
             </ul>
+            <partial name="_LoginPartial" />
         </div>
 
     </nav>

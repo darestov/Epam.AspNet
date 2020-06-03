@@ -29,7 +29,9 @@ namespace Epam.AspNet.Module1.Views
             public bool IsActive { get; set; }
         }
 
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         public async Task<IViewComponentResult> InvokeAsync()
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
             var endpointFeature = HttpContext.Features[typeof(IEndpointFeature)] as IEndpointFeature;
             Endpoint endpoint = endpointFeature?.Endpoint;

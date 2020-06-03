@@ -14,6 +14,8 @@ using System.IO;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using Microsoft.AspNetCore.Mvc.Controllers;
+using Epam.AspNet.Module1.Models.Security;
+using Microsoft.AspNetCore.Identity;
 
 namespace Epam.AspNet.Module1
 {
@@ -50,6 +52,24 @@ namespace Epam.AspNet.Module1
                 c.IncludeXmlComments(xmlPath);
             });
 
+            // DMAR: this is not for production, only not to mess with strict rules in educational project
+            services.Configure<IdentityOptions>(options =>
+            {
+                // Password settings
+                options.Password.RequireDigit = false;
+                options.Password.RequiredLength = 6;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireLowercase = false;
+            });
+
+            services.AddDbContext<SecurityContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("local")));
+
+            services.AddIdentity<User, IdentityRole>()
+                .AddEntityFrameworkStores<SecurityContext>()
+                .AddDefaultTokenProviders();
+
             services.AddDbContext<NorthwindContext>(options =>
                 options
                 .UseSqlServer(Configuration.GetConnectionString("local"))
@@ -78,6 +98,9 @@ namespace Epam.AspNet.Module1
 
             app.UseStaticFiles();
             app.UseRouting();
+
+            app.UseAuthentication();   
+            app.UseAuthorization();
 
             // use our custom image caching
             app.UseImageCaching(new ImageCachingOptions

@@ -100,7 +100,7 @@ namespace Epam.AspNet.Module1.Controllers
                 await context.SaveChangesAsync();
                 return RedirectToAction();
             }
-            catch(DbUpdateException ex)
+            catch (DbUpdateException)
             {
                 // ref constraint exception
                 throw;
